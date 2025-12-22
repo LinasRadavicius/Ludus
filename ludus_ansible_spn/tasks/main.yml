@@ -1,0 +1,13 @@
+---
+- name: Create svc account for Cribl
+  microsoft.ad.user:
+    identity: "{{ spn_name }}"
+    firstname: "{{ spn_fname }}"
+    surname: "{{ spn_sname }}"
+    password: "password"
+    path: "{{ domain_path }}"
+    password_never_expires: true
+    attributes:
+      set:
+        msDS-SupportedEncryptionTypes: 24
+

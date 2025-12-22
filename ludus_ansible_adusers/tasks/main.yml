@@ -1,0 +1,49 @@
+---
+- name: Create Ireland OU
+  microsoft.ad.ou:
+    name: Ireland
+    path: "{{ domain_path }}"
+    description: "Testing Security description Ireland"
+    state: present
+
+- name: Create American OU
+  microsoft.ad.ou:
+    name: America
+    path: "{{ domain_path }}"
+    state: present
+
+- name: Create Ireland group inside Ireland OU
+  microsoft.ad.group:
+    identity: IrelandTeam
+    scope: global
+    path: "OU=Ireland,{{ domain_path }}"
+- name: Create America group inside of the OU
+  microsoft.ad.group:
+    identity: AmericaTeam
+    scope: global
+    path: "OU=America,{{ domain_path }}"
+
+- name: Create svc account for Cribl
+  microsoft.ad.user:
+    identity: "svc-stream"
+    firstname: "svc"
+    surname: "stream"
+    password: "password"
+    path: "{{ domain_path }}"
+    password_never_expires: true
+    attributes:
+      set:
+        msDS-SupportedEncryptionTypes: 24
+
+- name: Create Ireland users and add to group
+  microsoft.ad.user:
+    identity: "{{ item.name}}"
+    firstname: "{{ item.firstname}}"
+    surname: "{{ item.surname}}"
+    password: "{{ item.password}}"
+    state: present
+    groups:
+      add:
+        - IrelandTeam
+    path: "OU=Ireland,{{ domain_path }}"
+  loop: "{{ ireland_users }}"

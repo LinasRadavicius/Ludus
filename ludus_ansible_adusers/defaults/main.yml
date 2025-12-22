@@ -1,0 +1,35 @@
+---
+# Role variables should all be prefaced with the name of the role to avoid
+# name conflicts with other roles
+domain_path: "DC=sra,DC=dev"
+
+# Users for creation
+ireland_users:
+  - name: ireland1
+    firstname: ireland
+    surname: one
+    password: password
+  - name: ireland2
+    firstname: ireland
+    surname: two
+    password: password
+  - name: ireland3
+    firstname: ireland
+    surname: three
+    password: password
+
+
+america_users:
+  - name: america1
+    firstname: america
+    surname: one
+    password: password
+  - name: america2
+    firstname: america
+    surname: two
+    password: password
+  - name: america3
+    firstname: america
+    surname: three
+    password: password
+
