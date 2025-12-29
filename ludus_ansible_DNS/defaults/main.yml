@@ -1,0 +1,8 @@
+---
+# Role variables should all be prefaced with the name of the role to avoid
+# name conflicts with other roles
+#
+#
+dns_name: "wef"
+record_type: "A"
+dns_targetIP: "20.170.154.99"

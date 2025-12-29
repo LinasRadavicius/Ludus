@@ -1,0 +1,29 @@
+ireland_users:
+  - name: ireland1
+    firstname: ireland
+    surname: one
+    password: password
+  - name: ireland2
+    firstname: ireland
+    surname: two
+    password: password
+  - name: ireland3
+    firstname: ireland
+    surname: three
+    password: password
+
+
+america_users:
+  - name: america1
+    firstname: america
+    surname: one
+    password: password
+  - name: america2
+    firstname: america
+    surname: two
+    password: password
+  - name: america3
+    firstname: america
+    surname: three
+    password: password
+

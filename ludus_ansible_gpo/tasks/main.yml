@@ -1,0 +1,34 @@
+---
+- name: Check if PowerShell script exists
+  ansible.windows.win_stat:
+    path: C:\gposetup.ps1
+  register: GPOscript
+- name: Move PowerShell script for GPO creation to host
+  ansible.builtin.copy:
+    src: files/gposetup.ps1 
+    dest: C:\gposetup.ps1
+  when: not GPOscript.stat.exists
+- name: Run script
+  ansible.windows.win_shell: |
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\gposetup.ps1
+  when: not GPOscript.stat.exists
+- name: Get GPO guid
+  ansible.windows.win_shell: |
+    Import-Module GroupPolicy
+    $gpoguid = (Get-GPO -Name "WEF-Cribl-PowerShell").Id.ToString()
+    $gpoguid
+  register: gpo_guid_raw
+- name: build braced GPO
+  ansible.builtin.set_fact:
+    gpo_guid_braced: "{{ '{' + gpo_guid_raw.stdout | trim + '}' }}"
+- name: show GUID
+  ansible.builtin.debug:
+    msg:
+      - "Not braced gpo: {{ gpo_guid_raw }}"
+      - "Not Braced stdout: {{ gpo_guid_raw.stdout | trim }}"
+      - "Braced: {{ gpo_guid_braced }}"
+- name: Move GptTmpl to new gpo
+  ansible.windows.win_copy:
+    src: files/GptTmpl.inf
+    dest: "C:\\Windows\\SYSVOL\\domain\\Policies\\{{ gpo_guid_braced }}\\Machine\\Microsoft\\Windows NT\\SecEdit\\"
+

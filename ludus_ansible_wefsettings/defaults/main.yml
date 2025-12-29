@@ -1,0 +1,8 @@
+---
+# Role variables should all be prefaced with the name of the role to avoid
+# name conflicts with other roles
+domain_path: "DC=sra,DC=dev"
+
+# SPN name ex: http/wef.cribl.sra.dev@CRIBL.SRA.DEV  -- <>@HOSTNAME.DOMAIN (Case-sensitve ^^^) this can be defined in range config usine role_vars: spn_name: 
+
+

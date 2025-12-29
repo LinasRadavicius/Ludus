@@ -1,0 +1,6 @@
+- name: Create DNS record to point to CRIBL Worker.
+  ansible.windows.win_dns_record:
+    name: "{{dns_name}}"
+    type: "{{record_type}}"
+    value: "{{dns_targetIP}}"
+    zone: "{{dns_zone}}"

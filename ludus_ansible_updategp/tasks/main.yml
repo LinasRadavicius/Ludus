@@ -1,0 +1,5 @@
+- name: Run gpupdate
+  ansible.windows.win_command:
+    cmd: gpupdate /force
+  tags:
+    - updategpo
