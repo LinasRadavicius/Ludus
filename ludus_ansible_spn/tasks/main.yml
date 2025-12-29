@@ -1,13 +1,43 @@
 ---
+- name: Check if user exists
+  microsoft.ad.object_info:
+    identity: "CN={{ svc_name }},CN=Users,{{ domain_path }}"
+    properties: "*"
+  register: svc_user
+  failed_when: false
+
 - name: Create svc account for Cribl
   microsoft.ad.user:
-    identity: "{{ spn_name }}"
-    firstname: "{{ spn_fname }}"
-    surname: "{{ spn_sname }}"
-    password: "password"
-    path: "{{ domain_path }}"
+    identity: "{{ svc_name }}"
+    password: "{{ svc_stream_password }}"
+    firstname: "{{ svc_fname }}"
+    surname: "{{ svc_sname }}"
+    path: "CN=Users,{{ domain_path }}"
+    state: present
     password_never_expires: true
     attributes:
       set:
         msDS-SupportedEncryptionTypes: 24
+  when: svc_user.objects | length == 0
 
+- name: Check if Keytab exists
+  ansible.windows.win_stat:
+    path: C:\{{ keytab_name }}
+  register: keytab_file
+
+- name: Create Keytab
+  ansible.windows.win_shell: |
+    ktpass /princ http/wef.sra.dev@SRA.DEV /mapuser SRA\{{ svc_name }} /pass "{{ svc_stream_password }}" /crypto AES256-SHA1 /ptype KRB5_NT_PRINCIPAL /out "C:\{{ keytab_name }}"
+  when: not keytab_file.stat.exists
+  register: create_keytab
+  
+- name: Add SSH private key
+  ansible.builtin.copy:
+    src: files/id_rsaAzure
+    dest: C:\Users\localuser\id_rsaAzure
+
+- name: copy keytab to worker using scp
+  ansible.windows.win_shell: |
+    scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i C:\Users\localuser\id_rsaAzure C:\{{ keytab_name }} root@wef.sra.dev:/etc/krb5.keytab
+  register: scp_result
+  when: create_keytab.changed

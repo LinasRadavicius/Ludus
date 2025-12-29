@@ -23,18 +23,6 @@
     scope: global
     path: "OU=America,{{ domain_path }}"
 
-- name: Create svc account for Cribl
-  microsoft.ad.user:
-    identity: "svc-stream"
-    firstname: "svc"
-    surname: "stream"
-    password: "password"
-    path: "{{ domain_path }}"
-    password_never_expires: true
-    attributes:
-      set:
-        msDS-SupportedEncryptionTypes: 24
-
 - name: Create Ireland users and add to group
   microsoft.ad.user:
     identity: "{{ item.name}}"

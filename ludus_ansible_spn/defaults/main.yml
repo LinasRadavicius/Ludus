@@ -5,6 +5,9 @@ domain_path: "DC=sra,DC=dev"
 
 # SPN name ex: http/wef.cribl.sra.dev@CRIBL.SRA.DEV  -- <>@HOSTNAME.DOMAIN (Case-sensitve ^^^) this can be defined in range config usine role_vars: spn_name: 
 
-spn_name: ""
-spn_fname: ""
+keytab_name: "wef.sra.dev.keytab"
+svc_name: "svc-stream"
+svc_fname: "svc"
+svc_sname: "stream"
+svc_stream_password: "password"
 

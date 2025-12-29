@@ -14,12 +14,12 @@ ludus:
       fqdn: sra.dev
       role: primary-dc
     roles:
-      - ludus_ansible_adusers
-      - ludus_ansible_spn
+      - ludus_ansible_gpo
     role_vars:
-      spn_name: "svc-roleVars"
-      spn_fname: "svc"
-      spn_sname: "rolevarsnodefault"
+      domain_path: "DC=sra,DC=dev"
+      domain_fqdn: "sra.dev"
+      dns_zone: "sra.dev"
+
   - vm_name: "{{ range_id }}-ad-win11-22h2-enterprise-x64-1"
     hostname: "{{ range_id }}-WIN11-22H2-1"
     template: win11-22h2-x64-enterprise-template
@@ -37,6 +37,8 @@ ludus:
     domain:
       fqdn: sra.dev
       role: member
+    roles:
+      - ludus_ansible_wefsettings
 network:
   inter_vlan_default: REJECT
   rules:
