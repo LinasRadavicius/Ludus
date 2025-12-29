@@ -1,3 +1,18 @@
+# What is this role?
+This role allows you to add a DNS record on your server running DNS, which will update this for all your VM's joined to the domain
+
+**Variables required to specify**
+
+In defaults/main.yml
+    {{ dns_name }}, ex. (<name>.zone)
+    {{ record_type }} ex. (A,TXT,AAA)
+    {{ dns_targetIP }} ex. (185.85.20.1)
+Specified in range config
+    {{ dns_zone }} - this zone MUST already exist on the DC! ex. if you're domain is DOMAIN.LOCAL, set dns_zone = 'DOMAIN.LOCAL'
+
+**SEE default/main.yml & defaultrange.yml for example of usage of this role**
+
+
 # README
 
 This template includes a task yml for caching downloads to the Ludus host (download_file.yml) as well as GitHub action to push the role to Ansible Galaxy when a tag is created in git. You'll need to get a [Galaxy token](https://galaxy.ansible.com/ui/token/) and set it as `GALAXY_API_KEY` in [Github Secrets](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository) for the Ansible Galaxy deployment to work correctly.
