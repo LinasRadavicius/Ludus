@@ -11,7 +11,7 @@ ludus:
     windows:
       sysprep: false
     domain:
-      fqdn: sra.dev
+      fqdn: linax.local
       role: primary-dc
     roles:
       - ludus_ansible_DNS
@@ -22,9 +22,9 @@ ludus:
       - ludus_ansible_updategp
       - ludus_ansible_reboot
     role_vars:
-      domain_path: "DC=sra,DC=dev"
-      domain_fqdn: "sra.dev"
-      dns_zone: "sra.dev"
+      domain_path: "DC=linax,DC=local"
+      domain_fqdn: "linax.local"
+      dns_zone: "linax.local"
   - vm_name: "{{ range_id }}-Server2022-Fileserver"
     hostname: "{{ range_id }}-FileServer2022"
     template: win2022-server-x64-template
@@ -40,7 +40,7 @@ ludus:
       autologon_user: domainadmin
       autologon_password: password
     domain:
-      fqdn: sra.dev
+      fqdn: linax.local
       role: member
     roles:
       - ludus_ansible_wefsettings
@@ -63,7 +63,7 @@ ludus:
       autologon_user: domainadmin
       autologon_password: password
     domain:
-      fqdn: sra.dev
+      fqdn: linax.local
       role: member
     roles:
       - ludus_ansible_wefsettings
